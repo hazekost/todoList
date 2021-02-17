@@ -1,11 +1,13 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {AddItemForm} from './AddItemForm'
 import {EditableSpan} from './EditableSpan'
 import {Button, IconButton} from '@material-ui/core'
 import {Delete} from '@material-ui/icons'
 import {Task} from './Task'
-import {TaskStatuses, TaskType} from './api/todolists-api'
-import {FilterValuesType} from './state/todolists-reducer'
+import {TaskStatuses, TaskType} from './api/todo-lists-a-p-i'
+import {FilterValuesType} from './state/todo-lists-reducer'
+import {useDispatch} from "react-redux";
+import {fetchTasksTC} from "./state/tasks-reducer";
 
 type PropsType = {
     id: string
@@ -23,7 +25,12 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(function (props: PropsType) {
-    console.log('Todolist called')
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.id))
+    }, [])
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
@@ -49,7 +56,6 @@ export const Todolist = React.memo(function (props: PropsType) {
     if (props.filter === 'completed') {
         tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
-
     return <div>
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist}>
