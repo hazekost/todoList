@@ -8,15 +8,20 @@ import {addTodoListTC, changeTodolistFilterAC, fetchTodoListsTC, FilterValuesTyp
     TodolistDomainType, updateTodoListTC} from "./todoLists-reducer";
 import {addTaskTC, removeTasksTC, TasksStateType, updateTaskStatusTC, updateTaskTitleTC} from "./tasks-reducer";
 import {TaskStatuses} from "../../api/todoLists-API";
+import {Redirect} from "react-router-dom";
 
 
 export const TodoListsList = () => {
 
     const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (!isLoggedIn) {
+            return
+        }
         dispatch(fetchTodoListsTC())
     }, [])
 
@@ -52,6 +57,10 @@ export const TodoListsList = () => {
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodoListTC(title))
     }, [dispatch]);
+
+    if (!isLoggedIn) {
+        return <Redirect to={"/login"}/>
+    }
 
     return (
         <>

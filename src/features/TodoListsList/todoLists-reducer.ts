@@ -1,23 +1,18 @@
 import {todoListsAPI, TodolistType} from '../../api/todoLists-API'
 import {Dispatch} from "redux";
 import {
+    ErrorUtilsDispatchType,
     RequestStatusType,
-    setAppErrorAC,
-    setAppErrorActionType,
     setAppStatusAC,
-    setAppStatusActionType
 } from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
-export type setTodoListsActionType = ReturnType<typeof setTodoListsAC> | setAppStatusActionType
-export type removeTodoListActionType = ReturnType<typeof removeTodolistAC> | setAppStatusActionType
-    | changeTodolistEntityStatusActionType | setAppErrorActionType
-export type addTodoListActionType = ReturnType<typeof addTodolistAC> | setAppStatusActionType | setAppErrorActionType
-type changeTodoListTitleActionType =
-    ReturnType<typeof changeTodolistTitleAC>
-    | setAppStatusActionType
-    | setAppErrorActionType
-type changeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC> | setAppStatusActionType
+export type setTodoListsActionType = ReturnType<typeof setTodoListsAC> | ErrorUtilsDispatchType
+export type removeTodoListActionType = ReturnType<typeof removeTodolistAC> | ErrorUtilsDispatchType
+    | changeTodolistEntityStatusActionType
+export type addTodoListActionType = ReturnType<typeof addTodolistAC> | ErrorUtilsDispatchType
+type changeTodoListTitleActionType = ReturnType<typeof changeTodolistTitleAC> | ErrorUtilsDispatchType
+type changeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC> | ErrorUtilsDispatchType
 type changeTodolistEntityStatusActionType = ReturnType<typeof changeTodolistEntityStatusAC>
 
 type ActionsType = changeTodoListTitleActionType | changeTodolistFilterActionType | setTodoListsActionType

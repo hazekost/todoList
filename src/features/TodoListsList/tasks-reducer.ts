@@ -2,17 +2,17 @@ import {addTodoListActionType, removeTodoListActionType, setTodoListsActionType}
 import {TaskStatuses, TaskType, todoListsAPI} from '../../api/todoLists-API'
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
-import {setAppErrorActionType, setAppStatusAC, setAppStatusActionType} from "../../app/app-reducer";
+import {ErrorUtilsDispatchType, setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
-type setTasksActionType = ReturnType<typeof setTasksAC> | setAppStatusActionType | setAppErrorActionType
-type removeTaskActionType = ReturnType<typeof removeTaskAC> | setAppStatusActionType | setAppErrorActionType
-type addTaskActionType = ReturnType<typeof addTaskAC> | setAppStatusActionType | setAppErrorActionType
-type updateTaskStatusActionType = ReturnType<typeof updateTaskStatusAC> | setAppStatusActionType | setAppErrorActionType
-type updateTaskTitleActionType = ReturnType<typeof updateTaskTitleAC> | setAppStatusActionType | setAppErrorActionType
+type setTasksActionType = ReturnType<typeof setTasksAC>
+type removeTaskActionType = ReturnType<typeof removeTaskAC>
+type addTaskActionType = ReturnType<typeof addTaskAC>
+type updateTaskStatusActionType = ReturnType<typeof updateTaskStatusAC>
+type updateTaskTitleActionType = ReturnType<typeof updateTaskTitleAC>
 
 type ActionsType = removeTaskActionType | addTodoListActionType | removeTodoListActionType
     | setTodoListsActionType | setTasksActionType | addTaskActionType | updateTaskStatusActionType
@@ -88,7 +88,7 @@ const setTasksAC = (todoListId: string, tasks: Array<TaskType>) => {
 }
 
 export const fetchTasksTC = (todoListId: string) => {
-    return (dispatch: Dispatch<setTasksActionType>) => {
+    return (dispatch: Dispatch<setTasksActionType|ErrorUtilsDispatchType>) => {
         dispatch(setAppStatusAC("loading"))
         todoListsAPI.getTasks(todoListId)
             .then((response) => {
@@ -101,7 +101,7 @@ export const fetchTasksTC = (todoListId: string) => {
     }
 }
 export const removeTasksTC = (todoListId: string, taskId: string) => {
-    return (dispatch: Dispatch<removeTaskActionType>) => {
+    return (dispatch: Dispatch<removeTaskActionType|ErrorUtilsDispatchType>) => {
         dispatch(setAppStatusAC("loading"))
         todoListsAPI.deleteTask(todoListId, taskId)
             .then((response) => {
@@ -118,7 +118,7 @@ export const removeTasksTC = (todoListId: string, taskId: string) => {
     }
 }
 export const addTaskTC = (todoListId: string, taskTitle: string) => {
-    return (dispatch: Dispatch<addTaskActionType>) => {
+    return (dispatch: Dispatch<addTaskActionType|ErrorUtilsDispatchType>) => {
         dispatch(setAppStatusAC("loading"))
         todoListsAPI.createTask(todoListId, taskTitle)
             .then((response) => {
@@ -135,7 +135,7 @@ export const addTaskTC = (todoListId: string, taskTitle: string) => {
     }
 }
 export const updateTaskStatusTC = (todoListId: string, taskId: string, status: TaskStatuses) => {
-    return (dispatch: Dispatch<updateTaskStatusActionType>, getState: () => AppRootStateType) => {
+    return (dispatch: Dispatch<updateTaskStatusActionType|ErrorUtilsDispatchType>, getState: () => AppRootStateType) => {
         let task = getState().tasks[todoListId].find(t => t.id === taskId)
         if (task) {
             dispatch(setAppStatusAC("loading"))
@@ -162,7 +162,7 @@ export const updateTaskStatusTC = (todoListId: string, taskId: string, status: T
     }
 }
 export const updateTaskTitleTC = (todoListId: string, taskId: string, title: string) => {
-    return (dispatch: Dispatch<updateTaskTitleActionType>, getState: () => AppRootStateType) => {
+    return (dispatch: Dispatch<updateTaskTitleActionType|ErrorUtilsDispatchType>, getState: () => AppRootStateType) => {
         let task = getState().tasks[todoListId].find(t => t.id === taskId)
         if (task) {
             dispatch(setAppStatusAC("loading"))
