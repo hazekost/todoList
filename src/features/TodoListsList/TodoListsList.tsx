@@ -25,8 +25,8 @@ export const TodoListsList = () => {
         dispatch(fetchTodoListsTC())
     }, [])
 
-    const removeTask = useCallback((id: string, todolistId: string) => {
-        dispatch(removeTasksTC(todolistId, id))
+    const removeTask = useCallback((taskId: string, todoListId: string) => {
+        dispatch(removeTasksTC({taskId, todoListId}))
     }, []);
 
     const addTask = useCallback((title: string, todolistId: string) => {

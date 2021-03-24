@@ -1,5 +1,5 @@
 import React from 'react'
-import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
+import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@material-ui/core'
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "./auth-reducer";
@@ -39,7 +39,7 @@ export const Login = () => {
 
             return errors;
         },
-        onSubmit: values => {
+        onSubmit: (values) => {
             dispatch(loginTC(values))
             formik.resetForm()
         },
