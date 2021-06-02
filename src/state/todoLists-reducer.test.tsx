@@ -15,7 +15,7 @@ beforeEach(() => {
 
 test("New TodoList should be added", () => {
 
-    let endState = todoListsReducer(startState, addTodoListAC(v1(), "New Title"));
+    let endState = todoListsReducer(startState, addTodoListAC("New Title"));
 
     expect(endState.length).toBe(3);
     expect(endState[2].title).toBe("New Title");
