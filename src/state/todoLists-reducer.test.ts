@@ -1,6 +1,5 @@
 import { v1 } from "uuid"
-import { TodoListType } from "../App"
-import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC, todoListsReducer } from "./todoLists-reducer"
+import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC, todoListsReducer, TodoListType } from "./todoLists-reducer"
 
 let startState: Array<TodoListType>
 const todoListID1 = v1();

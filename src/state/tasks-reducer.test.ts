@@ -1,6 +1,5 @@
 import { v1 } from "uuid"
-import { TasksType } from "../App";
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from "./tasks-reducer";
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksType } from "./tasks-reducer";
 import { addTodoListAC, removeTodoListAC } from "./todoLists-reducer";
 
 const todoListId1 = v1();
