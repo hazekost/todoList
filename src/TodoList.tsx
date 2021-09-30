@@ -1,19 +1,16 @@
 import { useState, KeyboardEvent, ChangeEvent } from "react";
-import { FilterType } from "./App";
+import { FilterType, TaskType } from "./App";
 
-type TasksType = {
-    id: string
-    isDone: boolean
-    title: string
-}
 type TodoListPropsType = {
+    id: string
     title: string
     filter: FilterType
-    tasks: Array<TasksType>
-    removeTask: (id: string) => void
-    changeFilter: (filter: FilterType) => void
-    changeStatus: (id: string, status: boolean) => void
-    addTask: (task: string) => void
+    tasks: Array<TaskType>
+    removeTask: (tlId: string, id: string) => void
+    changeFilter: (tlId: string, filter: FilterType) => void
+    changeStatus: (tlId: string, id: string, status: boolean) => void
+    addTask: (tlId: string, task: string) => void
+    removeTodoList: (id: string) => void
 }
 
 export const TodoList: React.FC<TodoListPropsType> = (props) => {
@@ -23,7 +20,7 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
 
     const addTask = () => {
         if (title.trim() !== "") {
-            props.addTask(title)
+            props.addTask(props.id, title)
         } else {
             setError("Title is requared")
         }
@@ -37,13 +34,16 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
             addTask()
         }
     }
+    const removeTodoList = () => {
+        props.removeTodoList(props.id)
+    }
     const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
-    const onAllClickHandler = () => props.changeFilter("all")
-    const onActiveClickHandler = () => props.changeFilter("active")
-    const onCompletedClickHandler = () => props.changeFilter("completed")
+    const onAllClickHandler = () => props.changeFilter(props.id, "all")
+    const onActiveClickHandler = () => props.changeFilter(props.id, "active")
+    const onCompletedClickHandler = () => props.changeFilter(props.id, "completed")
 
     return <div>
-        <h3>{props.title}</h3>
+        <h3>{props.title} <button onClick={removeTodoList}>x</button></h3>
         <div>
             <input value={title}
                 onKeyPress={addTaskOnKeyPress}
@@ -56,12 +56,12 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
             {
                 props.tasks.map(t => {
 
-                    const removeTask = () => props.removeTask(t.id)
-                    const changeStatus = (e: ChangeEvent<HTMLInputElement>) => props.changeStatus(t.id, e.currentTarget.checked)
+                    const removeTask = () => props.removeTask(props.id, t.id)
+                    const changeStatus = (e: ChangeEvent<HTMLInputElement>) => props.changeStatus(props.id, t.id, e.currentTarget.checked)
 
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
                         <input type="checkbox" checked={t.isDone} onChange={changeStatus} />
-                        <span>{t.title}</span>
+                        <span>{t.title} </span>
                         <button onClick={removeTask}>x</button>
                     </li>
                 })
