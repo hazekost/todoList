@@ -1,3 +1,4 @@
+import { TextField } from "@material-ui/core"
 import { useState, FocusEvent, ChangeEvent } from "react"
 
 type EditableSpanPropsType = {
@@ -8,16 +9,19 @@ type EditableSpanPropsType = {
 export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
 
     let [edit, setEdit] = useState(false)
-    let [title, setTitle] = useState(props.title)
+    let [title, setTitle] = useState("")
 
-    const onDoubleClickHandler = () => setEdit(true)
+    const onDoubleClickHandler = () => {
+        setEdit(true)
+        setTitle(props.title)
+    }
     const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
+        props.setTitle(e.currentTarget.value)
         setEdit(false)
     }
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
 
     return edit
-        ? <input value={title} onChange={onChangeHandler} onBlur={onBlurHandler} autoFocus />
-        : <span onDoubleClick={onDoubleClickHandler}>{title}</span>
+        ? <TextField variant={"outlined"} value={title} onChange={onChangeHandler} onBlur={onBlurHandler} autoFocus />
+        : <span onDoubleClick={onDoubleClickHandler}>{props.title}</span>
 }
