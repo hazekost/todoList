@@ -12,7 +12,7 @@ export type TaskType = {
   title: string
   isDone: boolean
 }
-type TasksType = {
+export type TasksType = {
   [key: string]: Array<TaskType>
 }
 type TodoListType = {
@@ -39,20 +39,23 @@ function App() {
     [todoListId2]: [
       { id: v1(), title: "Milk", isDone: true },
       { id: v1(), title: "Bread", isDone: false }
-    ],
+    ]
   })
 
   function removeTask(tlId: string, id: string) {
     setTasks({ ...tasks, [tlId]: tasks[tlId].filter(t => t.id !== id) })
-  }
-  function changeFilter(tlID: string, filter: FilterType) {
-    setTodoLists(todoLists.map(tl => tl.id === tlID ? { ...tl, filter } : tl))
   }
   function addTask(tlId: string, title: string) {
     setTasks({ ...tasks, [tlId]: [...tasks[tlId], { id: v1(), title, isDone: false }] })
   }
   function changeStatus(tlId: string, id: string, isDone: boolean) {
     setTasks({ ...tasks, [tlId]: tasks[tlId].map(t => t.id === id ? { ...t, isDone } : t) })
+  }
+  function changeTaskTitle(tlId: string, taskId: string, title: string) {
+    setTasks({ ...tasks, [tlId]: tasks[tlId].map(t => t.id === taskId ? { ...t, title } : t) })
+  }
+  function changeFilter(tlID: string, filter: FilterType) {
+    setTodoLists(todoLists.map(tl => tl.id === tlID ? { ...tl, filter } : tl))
   }
   function removeTodoList(id: string) {
     delete tasks[id]
@@ -65,9 +68,6 @@ function App() {
   }
   function changeTodoListTitle(id: string, title: string) {
     setTodoLists(todoLists.map(tl => tl.id === id ? { ...tl, title } : tl))
-  }
-  function changeTaskTitle(tlId: string, taskId: string, title: string) {
-    setTasks({ ...tasks, [tlId]: tasks[tlId].map(t => t.id === taskId ? { ...t, title } : t) })
   }
 
   return (
@@ -97,9 +97,9 @@ function App() {
               tasksForTodoList = tasks[tl.id].filter(t => t.isDone)
             }
 
-            return <Grid item>
+            return <Grid key={tl.id} item>
               <Paper style={{ padding: "10px" }}>
-                <TodoList key={tl.id}
+                <TodoList
                   id={tl.id}
                   title={tl.title}
                   tasks={tasksForTodoList}
