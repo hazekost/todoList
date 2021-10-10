@@ -6,17 +6,14 @@ export type TodoListType = {
     title: string
     filter: FilterType
 }
-type StateType = Array<TodoListType>
-type ActionType = AddTodoListActionType | RemoveTodoListActionType | ChangeTodoListFilterActionType | ChangeTodoListTitleActionType
+type ActionType = AddTodoListActionType | RemoveTodoListActionType
+    | ChangeTodoListFilterActionType | ChangeTodoListTitleActionType
 
-let todoListId1 = v1()
-let todoListId2 = v1()
-let initialState: StateType = [
-    { id: todoListId1, title: "What to learn", filter: "all" },
-    { id: todoListId2, title: "What to buy", filter: "all" }
-]
+export let todoListId1 = v1()
+export let todoListId2 = v1()
+let initialTodoListsState: Array<TodoListType> = []
 
-export const todoListsReducer = (state: StateType = initialState, action: ActionType): StateType => {
+export const todoListsReducer = (state: Array<TodoListType> = initialTodoListsState, action: ActionType): Array<TodoListType> => {
     switch (action.type) {
         case "ADD-TODOLIST":
             return [...state, { id: action.id, title: action.title, filter: "all" }]

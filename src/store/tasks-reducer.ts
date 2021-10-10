@@ -6,30 +6,18 @@ type TaskType = {
     title: string
     isDone: boolean
 }
-type TasksType = {
+export type TasksType = {
     [key: string]: Array<TaskType>
 }
 type ActionType = AddTaskActionType | RemoveTaskActionType | ChangeTaskStatusActionType
     | ChangeTaskTitleActionType | AddTodoListActionType | RemoveTodoListActionType
 
-let todoListId1 = v1()
-let todoListId2 = v1()
-let initialState: TasksType = {
-    [todoListId1]: [
-        { id: v1(), title: "HTML & CSS", isDone: true },
-        { id: v1(), title: "JS", isDone: true },
-        { id: v1(), title: "ReactJS", isDone: false }
-    ],
-    [todoListId2]: [
-        { id: v1(), title: "Milk", isDone: true },
-        { id: v1(), title: "Bread", isDone: false }
-    ]
-}
+let initialTasksState: TasksType = {}
 
-export const tasksReducer = (state: TasksType = initialState, action: ActionType): TasksType => {
+export const tasksReducer = (state: TasksType = initialTasksState, action: ActionType): TasksType => {
     switch (action.type) {
         case "ADD-TASK":
-            return { ...state, [action.id]: [...state[action.id], { id: v1(), title: action.title, isDone: false }] }
+            return { ...state, [action.id]: [{ id: v1(), title: action.title, isDone: false }, ...state[action.id]] }
         case "REMOVE-TASK":
             return { ...state, [action.tlid]: state[action.tlid].filter(t => t.id !== action.id) }
         case "CHANGE-TASK-STATUS":
@@ -52,7 +40,7 @@ type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
 type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>
 type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
 
-export const addTaskAC = (title: string, id: string) => ({ type: "ADD-TASK" as const, id, title })
+export const addTaskAC = (id: string, title: string) => ({ type: "ADD-TASK" as const, id, title })
 export const removeTaskAC = (tlid: string, id: string) => ({ type: "REMOVE-TASK" as const, tlid, id })
 export const changeTaskStatusAC = (tlid: string, id: string, isDone: boolean) => (
     { type: "CHANGE-TASK-STATUS" as const, tlid, id, isDone }
