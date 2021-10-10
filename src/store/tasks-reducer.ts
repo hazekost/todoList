@@ -1,7 +1,7 @@
 import { v1 } from "uuid"
 import { AddTodoListActionType, RemoveTodoListActionType } from "./todoLists-reducer"
 
-type TaskType = {
+export type TaskType = {
     id: string
     title: string
     isDone: boolean

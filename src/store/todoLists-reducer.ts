@@ -1,6 +1,6 @@
 import { v1 } from "uuid"
 
-type FilterType = "all" | "completed" | "active"
+export type FilterType = "all" | "completed" | "active"
 export type TodoListType = {
     id: string
     title: string
