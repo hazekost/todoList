@@ -1,5 +1,6 @@
 import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddItemForm } from './AddItemForm';
 import './App.css';
@@ -12,18 +13,18 @@ function AppWithRedux() {
     const dispatch = useDispatch()
     let todoLists = useSelector<AppStateType, Array<TodoListType>>(state => state.todoLists)
 
-    function changeFilter(id: string, filter: FilterType) {
+    const changeFilter = useCallback((id: string, filter: FilterType) => {
         dispatch(changeTodoListFilterAC(id, filter))
-    }
-    function removeTodoList(id: string) {
+    }, [dispatch])
+    const removeTodoList = useCallback((id: string) => {
         dispatch(removeTodoListAC(id))
-    }
-    function addTodoList(title: string) {
+    }, [dispatch])
+    const addTodoList = useCallback((title: string) => {
         dispatch(addTodoListAC(title))
-    }
-    function changeTodoListTitle(id: string, title: string) {
+    }, [dispatch])
+    const changeTodoListTitle = useCallback((id: string, title: string) => {
         dispatch(changeTodoListTitleAC(id, title))
-    }
+    }, [dispatch])
 
     return (
         <div className="AppWithReducers">

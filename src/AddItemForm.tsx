@@ -1,12 +1,14 @@
 import { IconButton, TextField } from "@material-ui/core";
 import { AddBoxRounded } from "@material-ui/icons";
+import React from "react";
 import { ChangeEvent, useState, KeyboardEvent } from "react";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
+export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo((props) => {
+    console.log("AddItemForm Called")
 
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
@@ -22,7 +24,9 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
         }
     }
     const addTaskOnKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+        if (error !== null) {
+            setError(null)
+        }
         if (e.key === "Enter") {
             addItem()
         }
@@ -36,4 +40,4 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
             <AddBoxRounded />
         </IconButton>
     </div>
-}
+})
