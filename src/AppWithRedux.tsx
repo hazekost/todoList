@@ -1,11 +1,12 @@
 import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddItemForm } from './AddItemForm';
 import './App.css';
 import { AppStateType } from './store/store';
 import { changeTodoListFilterAC, removeTodoListAC, addTodoListAC, changeTodoListTitleAC, TodoListType, FilterType } from './store/todoLists-reducer';
+import { todoAPI } from './todo-api/api';
 import { TodoList } from './TodoList';
 
 function AppWithRedux() {
@@ -25,6 +26,10 @@ function AppWithRedux() {
     const changeTodoListTitle = useCallback((id: string, title: string) => {
         dispatch(changeTodoListTitleAC(id, title))
     }, [dispatch])
+
+    useEffect(() => {
+        todoAPI.deleteTodo("3b791fef-e17d-4493-99a5-61382630bc2b").then(res => console.log(res))
+    }, [])
 
     return (
         <div className="AppWithReducers">

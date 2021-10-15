@@ -9,20 +9,21 @@ type EditableSpanPropsType = {
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo((props) => {
     console.log("EditableSpan called")
-    let [edit, setEdit] = useState(false)
-    let [title, setTitle] = useState("")
+    let { title, setTitle } = props
+    let [editMode, setEditMode] = useState(false)
+    let [value, setValue] = useState("")
 
     const onDoubleClickHandler = () => {
-        setEdit(true)
-        setTitle(props.title)
+        setEditMode(true)
+        setValue(title)
     }
     const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => {
-        props.setTitle(e.currentTarget.value)
-        setEdit(false)
+        setTitle(e.currentTarget.value)
+        setEditMode(false)
     }
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)
 
-    return edit
-        ? <TextField variant={"outlined"} value={title} onChange={onChangeHandler} onBlur={onBlurHandler} autoFocus />
+    return editMode
+        ? <TextField variant={"outlined"} value={value} onChange={onChangeHandler} onBlur={onBlurHandler} autoFocus />
         : <span onDoubleClick={onDoubleClickHandler}>{props.title}</span>
 })

@@ -14,21 +14,22 @@ type TaskPropsType = {
 
 export const Task: React.FC<TaskPropsType> = React.memo((props) => {
 
+    const { tlid, taskid, isDone, title } = props
     const dispatch = useDispatch()
 
     const removeTask = useCallback(() => {
-        dispatch(removeTaskAC(props.tlid, props.taskid))
-    }, [dispatch, props.tlid, props.taskid])
+        dispatch(removeTaskAC(tlid, taskid))
+    }, [dispatch, tlid, taskid])
     const changeStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(changeTaskStatusAC(props.tlid, props.taskid, e.currentTarget.checked))
-    }, [dispatch, props.tlid, props.taskid])
+        dispatch(changeTaskStatusAC(tlid, taskid, e.currentTarget.checked))
+    }, [dispatch, tlid, taskid])
     const changeTaskTitle = useCallback((title: string) => {
-        dispatch(changeTaskTitleAC(props.tlid, props.taskid, title))
-    }, [dispatch, props.tlid, props.taskid])
+        dispatch(changeTaskTitleAC(tlid, taskid, title))
+    }, [dispatch, tlid, taskid])
 
-    return <div className={props.isDone ? "is-done" : ""}>
-        <Checkbox color={"primary"} checked={props.isDone} onChange={changeStatus} />
-        <EditableSpan title={props.title} setTitle={changeTaskTitle} />
+    return <div className={isDone ? "is-done" : ""}>
+        <Checkbox color={"primary"} checked={isDone} onChange={changeStatus} />
+        <EditableSpan title={title} setTitle={changeTaskTitle} />
         <IconButton onClick={removeTask}>
             <Delete />
         </IconButton>

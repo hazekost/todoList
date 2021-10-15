@@ -7,7 +7,7 @@ export type TodoListType = {
     filter: FilterType
 }
 type ActionType = AddTodoListActionType | RemoveTodoListActionType
-    | ChangeTodoListFilterActionType | ChangeTodoListTitleActionType
+    | ChangeTodoListFilterActionType | ChangeTodoListTitleActionType | SetTodoListsActionType
 
 export let todoListId1 = v1()
 export let todoListId2 = v1()
@@ -32,8 +32,10 @@ export type AddTodoListActionType = ReturnType<typeof addTodoListAC>
 export type RemoveTodoListActionType = ReturnType<typeof removeTodoListAC>
 type ChangeTodoListFilterActionType = ReturnType<typeof changeTodoListFilterAC>
 type ChangeTodoListTitleActionType = ReturnType<typeof changeTodoListTitleAC>
+type SetTodoListsActionType = ReturnType<typeof setTodoListsAC>
 
 export const addTodoListAC = (title: string) => ({ type: "ADD-TODOLIST" as const, title, id: v1() })
 export const removeTodoListAC = (id: string) => ({ type: "REMOVE-TODOLIST" as const, id })
 export const changeTodoListFilterAC = (id: string, filter: FilterType) => ({ type: "CHANGE-TODOLIST-FILTER" as const, id, filter })
 export const changeTodoListTitleAC = (id: string, title: string) => ({ type: "CHANGE-TODOLIST-TITLE" as const, id, title })
+const setTodoListsAC = (todoLists: Array<TodoListType>) => ({ type: "SET-TODOLISTS" as const, payload: { todoLists } })
