@@ -1,12 +1,12 @@
 import axios from "axios";
 
-type TodoListType = {
+export type TodoListType = {
     id: string
     title: string
     addedDate: string
     order: number
 }
-type ItemType = {
+export type ItemType = {
     id: string
     title: string
     description: string
@@ -34,10 +34,9 @@ type UpdateDataTaskType = {
     description: string
     status: number
     priority: number
-    startDate: string | null,
-    deadline: string | null,
+    startDate: string | null
+    deadline: string | null
 }
-
 
 const instance = axios.create({
     baseURL: "https://social-network.samuraijs.com/api/1.1/",

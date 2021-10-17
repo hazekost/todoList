@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AddItemForm } from './AddItemForm';
 import './App.css';
 import { AppStateType } from './store/store';
-import { changeTodoListFilterAC, removeTodoListAC, addTodoListAC, changeTodoListTitleAC, TodoListType, FilterType } from './store/todoLists-reducer';
+import { changeTodoListFilterAC, removeTodoListAC, addTodoListAC, changeTodoListTitleAC, TodoListDomainType, FilterType } from './store/todoLists-reducer';
 import { todoAPI } from './todo-api/api';
 import { TodoList } from './TodoList';
 
 function AppWithRedux() {
 
     const dispatch = useDispatch()
-    let todoLists = useSelector<AppStateType, Array<TodoListType>>(state => state.todoLists)
+    let todoLists = useSelector<AppStateType, Array<TodoListDomainType>>(state => state.todoLists)
 
     const changeFilter = useCallback((id: string, filter: FilterType) => {
         dispatch(changeTodoListFilterAC(id, filter))
@@ -21,7 +21,7 @@ function AppWithRedux() {
         dispatch(removeTodoListAC(id))
     }, [dispatch])
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodoListAC(title))
+        // dispatch(addTodoListAC(title))
     }, [dispatch])
     const changeTodoListTitle = useCallback((id: string, title: string) => {
         dispatch(changeTodoListTitleAC(id, title))
