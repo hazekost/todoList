@@ -4,32 +4,32 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddItemForm } from './AddItemForm';
 import './App.css';
-import { AppStateType } from './store/store';
-import { changeTodoListFilterAC, removeTodoListAC, addTodoListAC, changeTodoListTitleAC, TodoListDomainType, FilterType } from './store/todoLists-reducer';
-import { todoAPI } from './todo-api/api';
+import { AppRootStateType } from './store/store';
+import { changeTodoListFilterAC, TodoListDomainType, FilterType, getTodo, deleteTodo, addTodo, changeTodoTitle } from './store/todoLists-reducer';
 import { TodoList } from './TodoList';
 
 function AppWithRedux() {
 
     const dispatch = useDispatch()
-    let todoLists = useSelector<AppStateType, Array<TodoListDomainType>>(state => state.todoLists)
+    let todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todoLists)
 
+    useEffect(() => {
+        dispatch(getTodo())
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const removeTodoList = useCallback((id: string) => {
+        dispatch(deleteTodo(id))
+    }, [dispatch])
+    const addTodoList = useCallback((title: string) => {
+        dispatch(addTodo(title))
+    }, [dispatch])
+    const changeTodoListTitle = useCallback((id: string, title: string) => {
+        dispatch(changeTodoTitle(id, title))
+    }, [dispatch])
     const changeFilter = useCallback((id: string, filter: FilterType) => {
         dispatch(changeTodoListFilterAC(id, filter))
     }, [dispatch])
-    const removeTodoList = useCallback((id: string) => {
-        dispatch(removeTodoListAC(id))
-    }, [dispatch])
-    const addTodoList = useCallback((title: string) => {
-        // dispatch(addTodoListAC(title))
-    }, [dispatch])
-    const changeTodoListTitle = useCallback((id: string, title: string) => {
-        dispatch(changeTodoListTitleAC(id, title))
-    }, [dispatch])
-
-    useEffect(() => {
-        todoAPI.deleteTodo("3b791fef-e17d-4493-99a5-61382630bc2b").then(res => console.log(res))
-    }, [])
 
     return (
         <div className="AppWithReducers">
