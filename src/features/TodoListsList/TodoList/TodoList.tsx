@@ -1,41 +1,38 @@
-import { EditableSpan } from "./EditableSpan";
-import { AddItemForm } from "./AddItemForm";
+import { EditableSpan } from "../../../common/EditableSpan";
+import { AddItemForm } from "../../../common/AddItemForm";
 import { Button, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { AppRootStateType } from "./store/store";
-import { createTask, getTasks } from "./store/tasks-reducer";
-import { FilterType } from "./store/todoLists-reducer";
+import { AppRootStateType } from "../../../store/store";
+import { createTask, getTasks } from "../../../store/tasks-reducer";
+import { changeTodoListFilterAC, changeTodoTitle, deleteTodo, FilterType } from "../../../store/todoLists-reducer";
 import React, { useCallback, useEffect } from "react";
-import { Task } from "./Task";
-import { ItemType } from "./todo-api/api";
+import { Task } from "./Task/Task";
+import { ItemType } from "../../../api/api";
 
 type TodoListPropsType = {
     id: string
     title: string
     filter: FilterType
-    changeFilter: (tlId: string, filter: FilterType) => void
-    removeTodoList: (id: string) => void
-    changeTodoListTitle: (id: string, title: string) => void
 }
 
 export const TodoList: React.FC<TodoListPropsType> = React.memo((props) => {
     console.log("todoList Called");
-    const { id, title, filter, changeTodoListTitle, removeTodoList, changeFilter } = props
+    const { id, title, filter } = props
     let dispatch = useDispatch()
-    let tasks = useSelector<AppRootStateType, Array<ItemType>>(state => state.tasks[props.id])
+    let tasks = useSelector<AppRootStateType, Array<ItemType>>(state => state.tasks[id])
 
     useEffect(() => {
         dispatch(getTasks(id))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const removeTodoListHandler = useCallback(() => removeTodoList(id), [removeTodoList, id])
-    const onAllClickHandler = useCallback(() => changeFilter(id, "all"), [changeFilter, id])
-    const onActiveClickHandler = useCallback(() => changeFilter(id, "active"), [changeFilter, id])
-    const onCompletedClickHandler = useCallback(() => changeFilter(id, "completed"), [changeFilter, id])
     const addTask = useCallback((title: string) => dispatch(createTask(id, title)), [dispatch, id])
-    const setTodoListTitle = useCallback((title: string) => changeTodoListTitle(id, title), [changeTodoListTitle, id])
+    const removeTodoListHandler = useCallback(() => { dispatch(deleteTodo(id)) }, [dispatch, id])
+    const setTodoListTitle = useCallback((title: string) => { dispatch(changeTodoTitle(id, title)) }, [dispatch, id])
+    const onAllClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC(id, "all")) }, [dispatch, id])
+    const onActiveClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC(id, "active")) }, [dispatch, id])
+    const onCompletedClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC(id, "completed")) }, [dispatch, id])
 
     let tasksForTodoList = tasks
     if (filter === "active") {

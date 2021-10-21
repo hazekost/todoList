@@ -11,7 +11,7 @@ beforeEach(() => {
 
 test("new todolist should be added", () => {
 
-  let endState = todoListsReducer(initialState, addTodoListAC({ id: "3", title: "New TodoList", addedDate: "", order: -2, filter: "all" }))
+  let endState = todoListsReducer(initialState, addTodoListAC({ id: "3", title: "New TodoList", addedDate: "", order: -2 }))
 
   expect(endState.length).toBe(3)
   expect(endState[0].id).toBe("3")

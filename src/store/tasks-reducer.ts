@@ -1,8 +1,12 @@
 import { Dispatch } from "redux"
-import { ItemType, todoAPI } from "../todo-api/api"
+import { ItemType, todoAPI } from "../api/api"
 import { AppRootStateType } from "./store"
-import { AddTodoListActionType, RemoveTodoListActionType, SetTodoListsActionType } from "./todoLists-reducer"
+import { AddTodoListActionType, RemoveTodoListActionType, SetTodoListsActionType, TODOLISTS_TYPES } from "./todoLists-reducer"
 
+enum TASKS_TYPES {
+    ADD_TASK = "ADD_TASK", REMOVE_TASK = "REMOVE_TASK", CHANGE_TASK_TITLE = "CHANGE_TASK_TITLE",
+    CHANGE_TASK_STATUS = "CHANGE_TASK_STATUS", SET_TASKS = "SET_TASKS",
+}
 export type TasksType = {
     [key: string]: Array<ItemType>
 }
@@ -13,24 +17,24 @@ let initialTasksState: TasksType = {}
 
 export const tasksReducer = (state: TasksType = initialTasksState, action: TasksActionType): TasksType => {
     switch (action.type) {
-        case "ADD-TASK":
+        case TASKS_TYPES.ADD_TASK:
             return { ...state, [action.task.todoListId]: [{ ...action.task }, ...state[action.task.todoListId]] }
-        case "REMOVE-TASK":
+        case TASKS_TYPES.REMOVE_TASK:
             return { ...state, [action.tlid]: state[action.tlid].filter(t => t.id !== action.id) }
-        case "CHANGE-TASK-STATUS":
+        case TASKS_TYPES.CHANGE_TASK_STATUS:
             return { ...state, [action.tlid]: state[action.tlid].map(t => t.id === action.id ? { ...t, status: action.status } : t) }
-        case "CHANGE-TASK-TITLE":
+        case TASKS_TYPES.CHANGE_TASK_TITLE:
             return { ...state, [action.tlid]: state[action.tlid].map(t => t.id === action.id ? { ...t, title: action.title } : t) }
-        case "ADD-TODOLIST":
-            return { ...state, [action.payload.data.id]: [] }
-        case "REMOVE-TODOLIST": {
+        case TODOLISTS_TYPES.ADD_TODO:
+            return { ...state, [action.data.id]: [] }
+        case TODOLISTS_TYPES.REMOVE_TODO: {
             let stateCopy = { ...state }
             delete stateCopy[action.id]
             return stateCopy
         }
-        case "SET-TASKS":
+        case TASKS_TYPES.SET_TASKS:
             return { ...state, [action.id]: [...action.tasks] }
-        case "SET-TODOLISTS": {
+        case TODOLISTS_TYPES.SET_TODOS: {
             let stateCopy = { ...state }
             action.todoLists.forEach(tl => {
                 stateCopy[tl.id] = []
@@ -48,15 +52,15 @@ type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>
 type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
 type SetTasksActionType = ReturnType<typeof setTasks>
 
-const addTaskAC = (task: ItemType) => ({ type: "ADD-TASK" as const, task })
-const removeTaskAC = (tlid: string, id: string) => ({ type: "REMOVE-TASK" as const, tlid, id })
-const changeTaskStatusAC = (tlid: string, id: string, status: number) => (
-    { type: "CHANGE-TASK-STATUS" as const, tlid, id, status }
+export const addTaskAC = (task: ItemType) => ({ type: TASKS_TYPES.ADD_TASK as const, task })
+export const removeTaskAC = (tlid: string, id: string) => ({ type: TASKS_TYPES.REMOVE_TASK as const, tlid, id })
+export const changeTaskStatusAC = (tlid: string, id: string, status: number) => (
+    { type: TASKS_TYPES.CHANGE_TASK_STATUS as const, tlid, id, status }
 )
-const changeTaskTitleAC = (tlid: string, id: string, title: string) => (
-    { type: "CHANGE-TASK-TITLE" as const, tlid, id, title }
+export const changeTaskTitleAC = (tlid: string, id: string, title: string) => (
+    { type: TASKS_TYPES.CHANGE_TASK_TITLE as const, tlid, id, title }
 )
-const setTasks = (id: string, tasks: Array<ItemType>) => ({ type: "SET-TASKS" as const, tasks, id })
+export const setTasks = (id: string, tasks: Array<ItemType>) => ({ type: TASKS_TYPES.SET_TASKS as const, tasks, id })
 
 export const getTasks = (id: string) => (dispatch: Dispatch<TasksActionType>) => {
     todoAPI.getTasks(id).then(res => {

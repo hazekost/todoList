@@ -56,7 +56,7 @@ test("title of specified task should be changed", () => {
 
 test("new array should be added when new todolist is added", () => {
 
-    let action = addTodoListAC({ id: "todoListId3", title: "new todo", filter: "all", order: -4, addedDate: "" })
+    let action = addTodoListAC({ id: "todoListId3", title: "new todo", order: -4, addedDate: "" })
 
     let newTasksState = tasksReducer(initialState, action)
 

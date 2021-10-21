@@ -60,7 +60,7 @@ const instance = axios.create({
 })
 
 export const todoAPI = {
-    getTodo() {
+    getTodos() {
         return instance.get<Array<TodoListType>>(`todo-lists`)
     },
     createTodo(title: string) {

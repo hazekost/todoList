@@ -121,6 +121,6 @@
 // }
 
 // export default App;
-export const App = () => {
+export const App1 = () => {
 
 }
