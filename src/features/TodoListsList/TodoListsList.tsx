@@ -2,7 +2,7 @@ import { Container, Grid, Paper } from "@material-ui/core"
 import { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AddItemForm } from "../../common/AddItemForm"
-import { AppRootStateType } from "../../store/store"
+import { AppRootStateType } from "../../app/store"
 import { addTodo, getTodos, TodoListDomainType } from "../../store/todoLists-reducer"
 import { TodoList } from "./TodoList/TodoList"
 
@@ -20,7 +20,7 @@ export const TodoListsList = () => {
 
     return <Container fixed >
         <Grid container style={{ padding: "10px" }}>
-            <AddItemForm addItem={addTodoList} />
+            <AddItemForm addItem={addTodoList} disabled={false} />
         </Grid>
         <Grid container spacing={3}>
             {todoLists.map(tl => {
@@ -29,7 +29,8 @@ export const TodoListsList = () => {
                         <TodoList
                             id={tl.id}
                             title={tl.title}
-                            filter={tl.filter} />
+                            filter={tl.filter}
+                            disabled={tl.entityStatus === "loading"} />
                     </Paper>
                 </Grid>
             })}

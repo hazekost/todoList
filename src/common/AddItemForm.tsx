@@ -3,12 +3,13 @@ import { AddBoxRounded } from "@material-ui/icons";
 import React, { ChangeEvent, useState, KeyboardEvent } from "react";
 
 type AddItemFormPropsType = {
+    disabled: boolean
     addItem: (title: string) => void
 }
 
 export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo((props) => {
     console.log("AddItemForm Called")
-    let { addItem } = props
+    let { addItem, disabled } = props
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
@@ -24,8 +25,8 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo((props) =>
 
     return <div>
         <TextField value={title} error={!!error} variant={"outlined"} label={"Title"}
-            onKeyPress={addTaskOnKeyPress} helperText={error} onChange={onChangeInput} />
-        <IconButton color={"primary"} onClick={addItemHandler}>
+            onKeyPress={addTaskOnKeyPress} helperText={error} onChange={onChangeInput} disabled={disabled} />
+        <IconButton color={"primary"} onClick={addItemHandler} disabled={disabled}>
             <AddBoxRounded />
         </IconButton>
     </div>

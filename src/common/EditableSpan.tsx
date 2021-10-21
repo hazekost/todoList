@@ -4,18 +4,21 @@ import { useState, FocusEvent, ChangeEvent } from "react"
 
 type EditableSpanPropsType = {
     title: string
+    disabled: boolean
     setTitle: (title: string) => void
 }
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo((props) => {
     console.log("EditableSpan called")
-    let { title, setTitle } = props
+    let { title, setTitle, disabled } = props
     let [editMode, setEditMode] = useState(false)
     let [value, setValue] = useState("")
 
     const onDoubleClickHandler = () => {
-        setEditMode(true)
-        setValue(title)
+        if (!disabled) {
+            setEditMode(true)
+            setValue(title)
+        }
     }
     const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)

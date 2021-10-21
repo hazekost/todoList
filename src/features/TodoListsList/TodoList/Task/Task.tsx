@@ -11,11 +11,12 @@ type TaskPropsType = {
     taskid: string
     status: TaskStatuses
     title: string
+    disabled: boolean
 }
 
 export const Task: React.FC<TaskPropsType> = React.memo((props) => {
 
-    const { tlid, taskid, status, title } = props
+    const { tlid, taskid, status, title, disabled } = props
     const dispatch = useDispatch()
 
     const removeTask = useCallback(() => { dispatch(deleteTask(tlid, taskid)) }, [dispatch, tlid, taskid])
@@ -23,9 +24,9 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
     const changeTaskTitle = useCallback((title: string) => { dispatch(setTaskTitle(tlid, taskid, title)) }, [dispatch, tlid, taskid])
 
     return <div className={status === 1 ? "is-done" : ""}>
-        <Checkbox color={"primary"} checked={status === 0 ? false : true} onChange={changeStatus} />
-        <EditableSpan title={title} setTitle={changeTaskTitle} />
-        <IconButton onClick={removeTask}>
+        <Checkbox color={"primary"} checked={status === 0 ? false : true} onChange={changeStatus} disabled={disabled} />
+        <EditableSpan title={title} setTitle={changeTaskTitle} disabled={disabled} />
+        <IconButton onClick={removeTask} disabled={disabled}>
             <Delete />
         </IconButton>
     </div>
