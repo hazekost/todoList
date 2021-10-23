@@ -1,19 +1,19 @@
+import { addTodoListAC, removeTodoListAC } from '../todoLists-reducer';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksType } from './tasks-reducer';
-import { addTodoListAC, removeTodoListAC } from './todoLists-reducer';
 
 let initialState: TasksType
 
 beforeEach(() => {
     initialState = {
         "todolistId1": [
-            { id: "1", todoListId: "todolistId1", title: "CSS", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "" },
-            { id: "2", title: "JS", todoListId: "todolistId1", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "" },
-            { id: "3", title: "React", todoListId: "todolistId1", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "" }
+            { id: "1", todoListId: "todolistId1", title: "CSS", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "", entityStatus: "idle" },
+            { id: "2", title: "JS", todoListId: "todolistId1", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "", entityStatus: "idle" },
+            { id: "3", title: "React", todoListId: "todolistId1", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "", entityStatus: "idle" }
         ],
         "todolistId2": [
-            { id: "1", title: "bread", todoListId: "todolistId2", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "" },
-            { id: "2", title: "milk", todoListId: "todolistId2", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "" },
-            { id: "3", title: "tea", todoListId: "todolistId2", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "" }
+            { id: "1", title: "bread", todoListId: "todolistId2", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "", entityStatus: "idle" },
+            { id: "2", title: "milk", todoListId: "todolistId2", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "", entityStatus: "idle" },
+            { id: "3", title: "tea", todoListId: "todolistId2", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "", entityStatus: "idle" }
 
         ]
     }

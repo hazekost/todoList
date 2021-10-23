@@ -1,9 +1,9 @@
 import { Dispatch } from "redux"
-import { ItemType, todoAPI } from "../api/api"
-import { AppActionsType, RequestStatusType, setAppStatusAC } from "../app/app-reducer"
-import { AppRootStateType } from "../app/store"
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils"
-import { AddTodoListActionType, RemoveTodoListActionType, SetTodoListsActionType, TODOLISTS_TYPES } from "./todoLists-reducer"
+import { ItemType, todoAPI } from "../../../../api/api"
+import { AppActionsType, RequestStatusType, setAppStatusAC } from "../../../../app/app-reducer"
+import { AppRootStateType } from "../../../../app/store"
+import { handleServerAppError, handleServerNetworkError } from "../../../../utils/error-utils"
+import { AddTodoListActionType, RemoveTodoListActionType, SetTodoListsActionType, TODOLISTS_TYPES } from "../todoLists-reducer"
 
 enum TASKS_TYPES {
     ADD_TASK = "TASKS/ADD_TASK", REMOVE_TASK = "TASKS/REMOVE_TASK", CHANGE_TASK_TITLE = "TASKS/CHANGE_TASK_TITLE",
@@ -62,15 +62,21 @@ type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
 type SetTasksActionType = ReturnType<typeof setTasksAC>
 type ChangeTaskEntityStatusActionType = ReturnType<typeof changeTaskEntityStatus>
 
-export const addTaskAC = (task: ItemType) => ({ type: TASKS_TYPES.ADD_TASK as const, task })
-export const removeTaskAC = (tlid: string, id: string) => ({ type: TASKS_TYPES.REMOVE_TASK as const, tlid, id })
+export const addTaskAC = (task: ItemType) => (
+    { type: TASKS_TYPES.ADD_TASK as const, task }
+)
+export const removeTaskAC = (tlid: string, id: string) => (
+    { type: TASKS_TYPES.REMOVE_TASK as const, tlid, id }
+)
 export const changeTaskStatusAC = (tlid: string, id: string, status: number) => (
     { type: TASKS_TYPES.CHANGE_TASK_STATUS as const, tlid, id, status }
 )
 export const changeTaskTitleAC = (tlid: string, id: string, title: string) => (
     { type: TASKS_TYPES.CHANGE_TASK_TITLE as const, tlid, id, title }
 )
-const setTasksAC = (id: string, tasks: Array<ItemType>) => ({ type: TASKS_TYPES.SET_TASKS as const, tasks, id })
+const setTasksAC = (id: string, tasks: Array<ItemType>) => (
+    { type: TASKS_TYPES.SET_TASKS as const, tasks, id }
+)
 const changeTaskEntityStatus = (tlid: string, taskid: string, status: RequestStatusType) => (
     { type: TASKS_TYPES.CHANGE_TASK_ENTITY_STATUS as const, tlid, taskid, status }
 )
@@ -81,7 +87,7 @@ export const getTasks = (id: string) => (dispatch: Dispatch<TasksActionType>) =>
             dispatch(setTasksAC(id, res.data.items))
         })
         .catch(err => {
-            handleServerNetworkError(err, dispatch)
+            handleServerNetworkError(err.response.data, dispatch)
         })
 }
 export const createTask = (id: string, title: string) => (dispatch: Dispatch<TasksActionType>) => {
@@ -96,7 +102,7 @@ export const createTask = (id: string, title: string) => (dispatch: Dispatch<Tas
             }
         })
         .catch(err => {
-            handleServerNetworkError(err, dispatch)
+            handleServerNetworkError(err.response.data, dispatch)
         })
 }
 export const deleteTask = (tlid: string, taskid: string) => (dispatch: Dispatch<TasksActionType>) => {
@@ -107,15 +113,15 @@ export const deleteTask = (tlid: string, taskid: string) => (dispatch: Dispatch<
             if (res.data.resultCode === 0) {
                 dispatch(removeTaskAC(tlid, taskid))
                 dispatch(setAppStatusAC("succeeded"))
+                dispatch(changeTaskEntityStatus(tlid, taskid, "succeeded"))
             } else {
                 handleServerAppError(res.data, dispatch)
+                dispatch(changeTaskEntityStatus(tlid, taskid, "failed"))
             }
         })
         .catch(err => {
-            handleServerNetworkError(err, dispatch)
-        })
-        .finally(() => {
-            dispatch(changeTaskEntityStatus(tlid, taskid, "succeeded"))
+            handleServerNetworkError(err.response.data, dispatch)
+            dispatch(changeTaskEntityStatus(tlid, taskid, "failed"))
         })
 }
 export const setTaskStatus = (tlid: string, taskid: string, status: number) => (dispatch: Dispatch<TasksActionType>, getState: () => AppRootStateType) => {
@@ -128,15 +134,15 @@ export const setTaskStatus = (tlid: string, taskid: string, status: number) => (
                 if (res.data.resultCode === 0) {
                     dispatch(changeTaskStatusAC(tlid, taskid, status))
                     dispatch(setAppStatusAC("succeeded"))
+                    dispatch(changeTaskEntityStatus(tlid, taskid, "succeeded"))
                 } else {
                     handleServerAppError(res.data, dispatch)
+                    dispatch(changeTaskEntityStatus(tlid, taskid, "failed"))
                 }
             })
             .catch(err => {
-                handleServerNetworkError(err, dispatch)
-            })
-            .finally(() => {
-                dispatch(changeTaskEntityStatus(tlid, taskid, "succeeded"))
+                handleServerNetworkError(err.response.data, dispatch)
+                dispatch(changeTaskEntityStatus(tlid, taskid, "failed"))
             })
     }
 }
@@ -150,15 +156,15 @@ export const setTaskTitle = (tlid: string, taskid: string, title: string) => (di
                 if (res.data.resultCode === 0) {
                     dispatch(changeTaskTitleAC(tlid, taskid, title))
                     dispatch(setAppStatusAC("succeeded"))
+                    dispatch(changeTaskEntityStatus(tlid, taskid, "succeeded"))
                 } else {
                     handleServerAppError(res.data, dispatch)
+                    dispatch(changeTaskEntityStatus(tlid, taskid, "failed"))
                 }
             })
             .catch(err => {
-                handleServerNetworkError(err, dispatch)
-            })
-            .finally(() => {
-                dispatch(changeTaskEntityStatus(tlid, taskid, "succeeded"))
+                handleServerNetworkError(err.response.data, dispatch)
+                dispatch(changeTaskEntityStatus(tlid, taskid, "failed"))
             })
     }
 }

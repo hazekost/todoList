@@ -1,7 +1,7 @@
 import { Dispatch } from "redux"
-import { todoAPI, TodoListType } from "../api/api"
-import { AppActionsType, RequestStatusType, setAppStatusAC } from "../app/app-reducer"
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils"
+import { todoAPI, TodoListType } from "../../../api/api"
+import { AppActionsType, RequestStatusType, setAppStatusAC } from "../../../app/app-reducer"
+import { handleServerAppError, handleServerNetworkError } from "../../../utils/error-utils"
 
 export enum TODOLISTS_TYPES {
     ADD_TODO = "TODOS/ADD_TODO", REMOVE_TODO = "TODOS/REMOVE_TODO", CHANGE_TODO_TITLE = "TODOS/CHANGE_TODO_TITLE",
@@ -63,7 +63,7 @@ export const getTodos = () => (dispatch: Dispatch<TodoActionType>) => {
             dispatch(setAppStatusAC("succeeded"))
         })
         .catch(err => {
-            handleServerNetworkError(err, dispatch)
+            handleServerNetworkError(err.response.data, dispatch)
         })
 }
 export const deleteTodo = (id: string) => (dispatch: Dispatch<TodoActionType>) => {
@@ -80,7 +80,7 @@ export const deleteTodo = (id: string) => (dispatch: Dispatch<TodoActionType>) =
             }
         })
         .catch(err => {
-            handleServerNetworkError(err, dispatch)
+            handleServerNetworkError(err.response.data, dispatch)
         })
 }
 export const addTodo = (title: string) => (dispatch: Dispatch<TodoActionType>) => {
@@ -95,7 +95,7 @@ export const addTodo = (title: string) => (dispatch: Dispatch<TodoActionType>) =
             }
         })
         .catch(err => {
-            handleServerNetworkError(err, dispatch)
+            handleServerNetworkError(err.response.data, dispatch)
         })
 }
 export const changeTodoTitle = (id: string, title: string) => (dispatch: Dispatch<TodoActionType>) => {
@@ -110,6 +110,6 @@ export const changeTodoTitle = (id: string, title: string) => (dispatch: Dispatc
             }
         })
         .catch(err => {
-            handleServerNetworkError(err, dispatch)
+            handleServerNetworkError(err.response.data, dispatch)
         })
 }

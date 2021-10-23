@@ -4,8 +4,8 @@ import { Button, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootStateType } from "../../../app/store";
-import { createTask, getTasks } from "../../../store/tasks-reducer";
-import { changeTodoListFilterAC, changeTodoTitle, deleteTodo, FilterType } from "../../../store/todoLists-reducer";
+import { createTask, getTasks } from "./Task/tasks-reducer";
+import { changeTodoListFilterAC, changeTodoTitle, deleteTodo, FilterType } from "./todoLists-reducer";
 import React, { useCallback, useEffect } from "react";
 import { Task } from "./Task/Task";
 import { ItemType } from "../../../api/api";
@@ -26,8 +26,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((props) => {
 
     useEffect(() => {
         dispatch(getTasks(id))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [dispatch, id])
 
     const addTask = useCallback((title: string) => dispatch(createTask(id, title)), [dispatch, id])
     const removeTodoListHandler = useCallback(() => { dispatch(deleteTodo(id)) }, [dispatch, id])

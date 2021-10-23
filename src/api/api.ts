@@ -85,3 +85,22 @@ export const todoAPI = {
         return instance.delete<ResponseType>(`todo-lists/${tlid}/tasks/${taskid}`)
     }
 }
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: boolean
+}
+
+export const authAPI = {
+    login(params: LoginParamsType) {
+        return instance.post<ResponseType<{ userId?: number }>>(`auth/login`, { ...params })
+    },
+    me() {
+        return instance.get<ResponseType<{ id: number, email: string, login: string }>>('auth/me')
+    },
+    logout() {
+        return instance.delete<ResponseType>(`auth/login`)
+    }
+}
