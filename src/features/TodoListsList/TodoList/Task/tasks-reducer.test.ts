@@ -1,5 +1,5 @@
 import { addTodoListAC, removeTodoListAC } from '../todoLists-reducer';
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksType } from './tasks-reducer';
+import { changeTaskStatusAC, changeTaskTitleAC, createTask, deleteTask, getTasks, tasksReducer, TasksType } from './tasks-reducer';
 
 let initialState: TasksType
 
@@ -21,7 +21,8 @@ beforeEach(() => {
 
 test("correct task should be added to correct array", () => {
 
-    let endState = tasksReducer(initialState, addTaskAC({ task: { id: "4", title: "new task", todoListId: "todolistId2", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "" } }))
+    let task = { id: "4", title: "new task", todoListId: "todolistId2", order: 0, status: 0, addedDate: "", startDate: "", deadline: "", priority: 0, description: "" }
+    let endState = tasksReducer(initialState, createTask.fulfilled({ task }, "", { title: "new task", tlid: "todolistId2" }))
 
     expect(endState["todolistId1"].length).toBe(3);
     expect(endState["todolistId2"].length).toBe(4);
@@ -31,7 +32,7 @@ test("correct task should be added to correct array", () => {
 
 test("correct task should be deleted from correct array", () => {
 
-    let newState = tasksReducer(initialState, removeTaskAC({ tlid: "todolistId1", id: "2" }))
+    let newState = tasksReducer(initialState, deleteTask.fulfilled({ tlid: "todolistId1", taskid: "2" }, "", { tlid: "todolistId1", taskid: "2" }))
 
     expect(newState["todolistId1"][1].title).toBe("React")
     expect(newState["todolistId1"].length).toBe(2)
@@ -80,4 +81,17 @@ test("Correct array should be removed when todolist is removed", () => {
 
     expect(keys.length).toBe(1)
     expect(newTasksState["todolistId2"]).toBeUndefined()
+})
+
+test("task should be added for todoList", () => {
+
+    const action = getTasks.fulfilled({ tlid: "todolistId2", tasks: initialState["todolistId2"] }, "requestId", "todolistId2")
+
+    const endState = tasksReducer({
+        "todolistId1": [],
+        "todolistId2": [],
+    }, action)
+
+    expect(endState["todolistId2"].length).toBe(3);
+    expect(endState["todolistId1"].length).toBe(0);
 })

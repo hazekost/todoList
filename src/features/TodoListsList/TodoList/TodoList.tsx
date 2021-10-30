@@ -12,7 +12,7 @@ import { ItemType } from "../../../api/api";
 import { RequestStatusType } from "../../../app/app-reducer";
 
 type TodoListPropsType = {
-    id: string
+    tlid: string
     title: string
     filter: FilterType
     disabled: boolean
@@ -20,20 +20,20 @@ type TodoListPropsType = {
 
 export const TodoList: React.FC<TodoListPropsType> = React.memo((props) => {
     console.log("todoList Called");
-    const { id, title, filter, disabled } = props
+    const { tlid, title, filter, disabled } = props
     let dispatch = useDispatch()
-    let tasks = useSelector<AppRootStateType, Array<ItemType & { entityStatus: RequestStatusType }>>(state => state.tasks[id])
+    let tasks = useSelector<AppRootStateType, Array<ItemType & { entityStatus: RequestStatusType }>>(state => state.tasks[tlid])
 
     useEffect(() => {
-        dispatch(getTasks(id))
-    }, [dispatch, id])
+        dispatch(getTasks(tlid))
+    }, [dispatch, tlid])
 
-    const addTask = useCallback((title: string) => dispatch(createTask(id, title)), [dispatch, id])
-    const removeTodoListHandler = useCallback(() => { dispatch(deleteTodo(id)) }, [dispatch, id])
-    const setTodoListTitle = useCallback((title: string) => { dispatch(changeTodoTitle(id, title)) }, [dispatch, id])
-    const onAllClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id, filter: "all" })) }, [dispatch, id])
-    const onActiveClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id, filter: "active" })) }, [dispatch, id])
-    const onCompletedClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id, filter: "completed" })) }, [dispatch, id])
+    const addTask = useCallback((title: string) => dispatch(createTask({ tlid, title })), [dispatch, tlid])
+    const removeTodoListHandler = useCallback(() => { dispatch(deleteTodo(tlid)) }, [dispatch, tlid])
+    const setTodoListTitle = useCallback((title: string) => { dispatch(changeTodoTitle(tlid, title)) }, [dispatch, tlid])
+    const onAllClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id: tlid, filter: "all" })) }, [dispatch, tlid])
+    const onActiveClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id: tlid, filter: "active" })) }, [dispatch, tlid])
+    const onCompletedClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id: tlid, filter: "completed" })) }, [dispatch, tlid])
 
     let tasksForTodoList = tasks
     if (filter === "active") {
@@ -52,7 +52,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((props) => {
         <AddItemForm addItem={addTask} disabled={disabled} />
         <div>
             {
-                tasksForTodoList.map(t => <Task key={t.id} tlid={id} taskid={t.id} title={t.title}
+                tasksForTodoList.map(t => <Task key={t.id} tlid={tlid} taskid={t.id} title={t.title}
                     status={t.status} disabled={t.entityStatus === "loading"} />)
             }
         </div>

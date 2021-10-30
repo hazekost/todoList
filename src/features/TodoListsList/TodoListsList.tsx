@@ -32,7 +32,7 @@ export const TodoListsList = () => {
                 return <Grid key={tl.id} item>
                     <Paper style={{ padding: "10px" }}>
                         <TodoList
-                            id={tl.id}
+                            tlid={tl.id}
                             title={tl.title}
                             filter={tl.filter}
                             disabled={tl.entityStatus === "loading"} />

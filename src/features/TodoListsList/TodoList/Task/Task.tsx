@@ -19,7 +19,7 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
     const { tlid, taskid, status, title, disabled } = props
     const dispatch = useDispatch()
 
-    const removeTask = useCallback(() => { dispatch(deleteTask(tlid, taskid)) }, [dispatch, tlid, taskid])
+    const removeTask = useCallback(() => { dispatch(deleteTask({ tlid, taskid })) }, [dispatch, tlid, taskid])
     const changeStatus = useCallback(() => { dispatch(setTaskStatus(tlid, taskid, status === 0 ? 2 : 0)) }, [dispatch, tlid, taskid, status])
     const changeTaskTitle = useCallback((title: string) => { dispatch(setTaskTitle(tlid, taskid, title)) }, [dispatch, tlid, taskid])
 
