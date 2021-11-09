@@ -86,19 +86,20 @@ const slice = createSlice({
         setTodoListsAC: (state, action: PayloadAction<{ todoLists: Array<TodoListType> }>) => {
             return action.payload.todoLists.map(tl => ({ ...tl, filter: "all", entityStatus: "idle" }))
         },
-    }
+    },
 })
 
 export const todoListsReducer = slice.reducer;
 export const { addTodoListAC, changeTodoListEntityStatusAC, changeTodoListFilterAC,
     changeTodoListTitleAC, removeTodoListAC, setTodoListsAC } = slice.actions
 
+
 export const getTodos = () => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({ status: "loading" }))
     todoAPI.getTodos()
         .then(res => {
-            dispatch(setTodoListsAC({ todoLists: res.data }))
             dispatch(setAppStatusAC({ status: "succeeded" }))
+            dispatch(setTodoListsAC({ todoLists: res.data }))
         })
         .catch(err => {
             console.dir(err)

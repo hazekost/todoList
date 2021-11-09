@@ -36,10 +36,14 @@ type GetTasksResponseType = {
     totalCount: number
     error: string | null
 }
+export type FieldErrorType = {
+    error: string
+    field: string
+}
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
-    fieldsErrors: Array<string>
+    fieldsErrors?: Array<FieldErrorType>
     data: D
 }
 type UpdateDataTaskType = {
