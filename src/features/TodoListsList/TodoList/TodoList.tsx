@@ -4,8 +4,8 @@ import { Button, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootStateType } from "../../../app/store";
-import { createTask, getTasks } from "./Task/tasks-reducer";
-import { changeTodoListFilterAC, changeTodoTitle, deleteTodo, FilterType } from "./todoLists-reducer";
+import { createTaskTC, getTasksTC } from "./Task/tasks-reducer";
+import { changeTodoListFilterAC, changeTodoTitleTC, deleteTodoTC, FilterType } from "./todoLists-reducer";
 import React, { useCallback, useEffect } from "react";
 import { Task } from "./Task/Task";
 import { ItemType } from "../../../api/api";
@@ -25,12 +25,12 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((props) => {
     let tasks = useSelector<AppRootStateType, Array<ItemType & { entityStatus: RequestStatusType }>>(state => state.tasks[tlid])
 
     useEffect(() => {
-        dispatch(getTasks(tlid))
+        dispatch(getTasksTC(tlid))
     }, [dispatch, tlid])
 
-    const addTask = useCallback((title: string) => dispatch(createTask({ tlid, title })), [dispatch, tlid])
-    const removeTodoListHandler = useCallback(() => { dispatch(deleteTodo(tlid)) }, [dispatch, tlid])
-    const setTodoListTitle = useCallback((title: string) => { dispatch(changeTodoTitle(tlid, title)) }, [dispatch, tlid])
+    const addTask = useCallback((title: string) => dispatch(createTaskTC({ tlid, title })), [dispatch, tlid])
+    const removeTodoListHandler = useCallback(() => { dispatch(deleteTodoTC(tlid)) }, [dispatch, tlid])
+    const setTodoListTitle = useCallback((title: string) => { dispatch(changeTodoTitleTC({ tlid, title })) }, [dispatch, tlid])
     const onAllClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id: tlid, filter: "all" })) }, [dispatch, tlid])
     const onActiveClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id: tlid, filter: "active" })) }, [dispatch, tlid])
     const onCompletedClickHandler = useCallback(() => { dispatch(changeTodoListFilterAC({ id: tlid, filter: "completed" })) }, [dispatch, tlid])

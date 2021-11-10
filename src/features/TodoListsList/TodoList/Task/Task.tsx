@@ -3,7 +3,7 @@ import { Delete } from "@material-ui/icons"
 import React, { useCallback } from "react"
 import { useDispatch } from "react-redux"
 import { EditableSpan } from "../../../../common/EditableSpan"
-import { deleteTask, setTaskStatus, setTaskTitle } from "./tasks-reducer"
+import { deleteTaskTC, updateTaskTC } from "./tasks-reducer"
 import { TaskStatuses } from "../../../../api/api"
 
 type TaskPropsType = {
@@ -19,9 +19,9 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
     const { tlid, taskid, status, title, disabled } = props
     const dispatch = useDispatch()
 
-    const removeTask = useCallback(() => { dispatch(deleteTask({ tlid, taskid })) }, [dispatch, tlid, taskid])
-    const changeStatus = useCallback(() => { dispatch(setTaskStatus(tlid, taskid, status === 0 ? 2 : 0)) }, [dispatch, tlid, taskid, status])
-    const changeTaskTitle = useCallback((title: string) => { dispatch(setTaskTitle(tlid, taskid, title)) }, [dispatch, tlid, taskid])
+    const removeTask = useCallback(() => { dispatch(deleteTaskTC({ tlid, taskid })) }, [dispatch, tlid, taskid])
+    const changeStatus = useCallback(() => { dispatch(updateTaskTC({ tlid, taskid, model: { status: status === 0 ? 2 : 0 } })) }, [dispatch, tlid, taskid, status])
+    const changeTaskTitle = useCallback((title: string) => { dispatch(updateTaskTC({ tlid, taskid, model: { title } })) }, [dispatch, tlid, taskid])
 
     return <div className={status === 1 ? "is-done" : ""}>
         <Checkbox color={"primary"} checked={status === 0 ? false : true} onChange={changeStatus} disabled={disabled} />

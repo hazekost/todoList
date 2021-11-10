@@ -46,13 +46,13 @@ export type ResponseType<D = {}> = {
     fieldsErrors?: Array<FieldErrorType>
     data: D
 }
-type UpdateDataTaskType = {
-    title: string
-    description: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string | null
-    deadline: string | null
+export type UpdateDataTaskType = {
+    title?: string
+    description?: string
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string | null
+    deadline?: string | null
 }
 
 const instance = axios.create({
