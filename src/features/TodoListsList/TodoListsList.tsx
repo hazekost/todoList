@@ -7,12 +7,13 @@ import { AppRootStateType } from "../../app/store"
 import { addTodoTC, getTodosTC, TodoListDomainType } from "./TodoList/todoLists-reducer"
 import { TodoList } from "./TodoList/TodoList"
 import { Redirect } from "react-router-dom"
+import { selectIsLoggedIn } from "../Auth/selectors"
 
 export const TodoListsList = React.memo(() => {
 
     const dispatch = useDispatch()
     let todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todoLists)
-    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    let isLoggedIn = useSelector(selectIsLoggedIn)
 
     useEffect(() => {
         dispatch(getTodosTC())

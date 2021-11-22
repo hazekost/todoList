@@ -3,20 +3,20 @@ import { Menu } from '@material-ui/icons';
 import './App.css';
 import { TodoListsList } from '../features/TodoListsList/TodoListsList';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType } from './store';
-import { RequestStatusType } from './app-reducer';
 import { ErrorSnackbar } from '../common/ErrorSnackBar';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Login } from '../features/Login/Login';
+import { Login } from '../features/Auth/Login';
 import { useEffect } from 'react';
-import { initializeAppTC, logoutTC } from '../features/Login/auth-reducer';
+import { initializeAppTC, logoutTC } from '../features/Auth/auth-reducer';
+import { authSelectors } from '../features/Auth';
+import { selectIsInitialized, selectStatus } from './selectors';
 
 function App() {
 
-    let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const dispatch = useDispatch()
-    let isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
-    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    let status = useSelector(selectStatus)
+    let isInitialized = useSelector(selectIsInitialized)
+    let isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
 
     useEffect(() => {
         dispatch(initializeAppTC())

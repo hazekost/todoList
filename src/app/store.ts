@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { combineReducers } from "redux";
 import thunk from "redux-thunk";
-import { authReducer } from "../features/Login/auth-reducer";
+import { authReducer } from "../features/Auth/auth-reducer";
 import { tasksReducer } from "../features/TodoListsList/TodoList/Task/tasks-reducer";
 import { todoListsReducer } from "../features/TodoListsList/TodoList/todoLists-reducer";
 import { appReducer } from "./app-reducer";
