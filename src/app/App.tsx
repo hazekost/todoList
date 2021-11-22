@@ -1,7 +1,7 @@
 import { AppBar, Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 import './App.css';
-import { TodoListsList } from '../features/TodoListsList/TodoListsList';
+import { TodoListsList } from '../features/TodoListsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { ErrorSnackbar } from '../common/ErrorSnackBar';
 import { Route, Switch, Redirect } from 'react-router-dom';

@@ -1,25 +1,24 @@
 import React from "react"
 import { Container, Grid, Paper } from "@material-ui/core"
-import { useCallback, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useSelector } from "react-redux"
 import { AddItemForm } from "../../common/AddItemForm"
-import { AppRootStateType } from "../../app/store"
-import { addTodoTC, getTodosTC, TodoListDomainType } from "./TodoList/todoLists-reducer"
+import { AppRootStateType, useActions } from "../../app/store"
+import { TodoListDomainType } from "./TodoList/todoLists-reducer"
 import { TodoList } from "./TodoList/TodoList"
 import { Redirect } from "react-router-dom"
 import { selectIsLoggedIn } from "../Auth/selectors"
+import { todoListsActions } from "."
 
 export const TodoListsList = React.memo(() => {
 
-    const dispatch = useDispatch()
     let todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todoLists)
     let isLoggedIn = useSelector(selectIsLoggedIn)
+    const { getTodosTC, addTodoTC } = useActions(todoListsActions)
 
     useEffect(() => {
-        dispatch(getTodosTC())
-    }, [dispatch])
-
-    const addTodoList = useCallback((title: string) => { dispatch(addTodoTC(title)) }, [dispatch])
+        getTodosTC()
+    }, [getTodosTC])
 
     if (!isLoggedIn) {
         return <Redirect to={'/login'} />
@@ -27,7 +26,7 @@ export const TodoListsList = React.memo(() => {
 
     return <Container fixed >
         <Grid container style={{ padding: "10px" }}>
-            <AddItemForm addItem={addTodoList} disabled={false} />
+            <AddItemForm addItem={addTodoTC} disabled={false} />
         </Grid>
         <Grid container spacing={3}>
             {todoLists.map(tl => {

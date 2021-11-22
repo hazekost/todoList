@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { ItemType, todoAPI, UpdateDataTaskType } from "../../../../api/api"
 import { RequestStatusType, setAppStatusAC } from "../../../../app/app-reducer"
 import { handleServerAppError, handleServerNetworkError } from "../../../../utils/error-utils"
-import { addTodoTC, getTodosTC, deleteTodoTC } from "../todoLists-reducer"
 import { AppRootStateType } from "../../../../app/store"
+import { asyncActions as todoAsyncActions } from "../todoLists-reducer"
 
 // enum TASKS_TYPES {
 //     ADD_TASK = "TASKS/ADD_TASK", REMOVE_TASK = "TASKS/REMOVE_TASK", CHANGE_TASK_TITLE = "TASKS/CHANGE_TASK_TITLE",
@@ -147,7 +147,7 @@ import { AppRootStateType } from "../../../../app/store"
 //     }
 // }
 
-export const getTasksTC = createAsyncThunk<{ tlid: string, tasks: Array<ItemType> }, string>("tasks/getTasks", async (tlid: string, { dispatch, rejectWithValue }) => {
+const getTasksTC = createAsyncThunk<{ tlid: string, tasks: Array<ItemType> }, string>("tasks/getTasks", async (tlid: string, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }))
     const res = await todoAPI.getTasks(tlid)
     try {
@@ -158,8 +158,7 @@ export const getTasksTC = createAsyncThunk<{ tlid: string, tasks: Array<ItemType
         return rejectWithValue(null)
     }
 })
-
-export const deleteTaskTC = createAsyncThunk<{ tlid: string, taskid: string }, { tlid: string, taskid: string }>("tasks/deleteTask", async (param: { tlid: string, taskid: string }, { dispatch, rejectWithValue }) => {
+const deleteTaskTC = createAsyncThunk<{ tlid: string, taskid: string }, { tlid: string, taskid: string }>("tasks/deleteTask", async (param: { tlid: string, taskid: string }, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }))
     dispatch(changeTaskEntityStatus({ tlid: param.tlid, taskid: param.taskid, status: "loading" }))
     const res = await todoAPI.deleteTask(param.tlid, param.taskid)
@@ -179,8 +178,7 @@ export const deleteTaskTC = createAsyncThunk<{ tlid: string, taskid: string }, {
         return rejectWithValue(null)
     }
 })
-
-export const createTaskTC = createAsyncThunk<{ task: ItemType }, { tlid: string, title: string }>("tasks/createTask", async (param: { tlid: string, title: string }, { dispatch, rejectWithValue }) => {
+const createTaskTC = createAsyncThunk<{ task: ItemType }, { tlid: string, title: string }>("tasks/createTask", async (param: { tlid: string, title: string }, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }))
     const res = await todoAPI.createTask(param.tlid, param.title)
     try {
@@ -196,8 +194,7 @@ export const createTaskTC = createAsyncThunk<{ task: ItemType }, { tlid: string,
         return rejectWithValue(null)
     }
 })
-
-export const updateTaskTC = createAsyncThunk<{ tlid: string, taskid: string, model: UpdateDataTaskType }, { tlid: string, taskid: string, model: UpdateDataTaskType }>("tasks/updateTask", async (param: { tlid: string, taskid: string, model: UpdateDataTaskType }, { dispatch, rejectWithValue, getState }) => {
+const updateTaskTC = createAsyncThunk<{ tlid: string, taskid: string, model: UpdateDataTaskType }, { tlid: string, taskid: string, model: UpdateDataTaskType }>("tasks/updateTask", async (param: { tlid: string, taskid: string, model: UpdateDataTaskType }, { dispatch, rejectWithValue, getState }) => {
     const state = getState() as AppRootStateType
     let task = state.tasks[param.tlid].find((t: ItemType) => t.id === param.taskid)
     if (!task) {
@@ -235,6 +232,13 @@ export const updateTaskTC = createAsyncThunk<{ tlid: string, taskid: string, mod
     }
 })
 
+export const asyncActions = {
+    getTasksTC,
+    deleteTaskTC,
+    createTaskTC,
+    updateTaskTC,
+}
+
 export type TasksType = {
     [key: string]: Array<ItemType & { entityStatus: RequestStatusType }>
 }
@@ -265,13 +269,13 @@ const slice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(addTodoTC.fulfilled, (state, action) => {
+        builder.addCase(todoAsyncActions.addTodoTC.fulfilled, (state, action) => {
             state[action.payload.id] = []
         });
-        builder.addCase(deleteTodoTC.fulfilled, (state, action) => {
+        builder.addCase(todoAsyncActions.deleteTodoTC.fulfilled, (state, action) => {
             delete state[action.payload]
         });
-        builder.addCase(getTodosTC.fulfilled, (state, action) => {
+        builder.addCase(todoAsyncActions.getTodosTC.fulfilled, (state, action) => {
             action.payload.forEach(tl => {
                 state[tl.id] = []
             })

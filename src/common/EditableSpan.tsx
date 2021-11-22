@@ -9,7 +9,7 @@ type EditableSpanPropsType = {
 }
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo((props) => {
-    console.log("EditableSpan called")
+
     let { title, setTitle, disabled } = props
     let [editMode, setEditMode] = useState(false)
     let [value, setValue] = useState("")

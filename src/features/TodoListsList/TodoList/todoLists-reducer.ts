@@ -119,7 +119,7 @@ export type TodoListDomainType = TodoListType & {
     entityStatus: RequestStatusType
 }
 
-export const getTodosTC = createAsyncThunk<Array<TodoListType>, undefined>("todo/getTodos", async (param, { dispatch, rejectWithValue }) => {
+const getTodosTC = createAsyncThunk<Array<TodoListType>, undefined>("todo/getTodos", async (param, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }))
     const res = await todoAPI.getTodos()
     try {
@@ -131,8 +131,7 @@ export const getTodosTC = createAsyncThunk<Array<TodoListType>, undefined>("todo
         return rejectWithValue(null)
     }
 })
-
-export const deleteTodoTC = createAsyncThunk<string, string>("todo/deleteTodo", async (tlid, { dispatch, rejectWithValue }) => {
+const deleteTodoTC = createAsyncThunk<string, string>("todo/deleteTodo", async (tlid, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }))
     dispatch(changeTodoListEntityStatusAC({ id: tlid, status: "loading" }))
     const res = await todoAPI.deleteTodo(tlid)
@@ -153,8 +152,7 @@ export const deleteTodoTC = createAsyncThunk<string, string>("todo/deleteTodo", 
         return rejectWithValue(null)
     }
 })
-
-export const addTodoTC = createAsyncThunk<TodoListType, string>("todo/addTodo", async (title, { dispatch, rejectWithValue }) => {
+const addTodoTC = createAsyncThunk<TodoListType, string>("todo/addTodo", async (title, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }))
     const res = await todoAPI.createTodo(title)
     try {
@@ -171,8 +169,7 @@ export const addTodoTC = createAsyncThunk<TodoListType, string>("todo/addTodo", 
         return rejectWithValue(null)
     }
 })
-
-export const changeTodoTitleTC = createAsyncThunk<{ tlid: string, title: string }, { tlid: string, title: string }>("todo/changeTodoTitle", async (param, { dispatch, rejectWithValue }) => {
+const changeTodoTitleTC = createAsyncThunk<{ tlid: string, title: string }, { tlid: string, title: string }>("todo/changeTodoTitle", async (param, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: "loading" }))
     const res = await todoAPI.updateTodoTitle(param.tlid, param.title)
     try {
@@ -190,7 +187,14 @@ export const changeTodoTitleTC = createAsyncThunk<{ tlid: string, title: string 
     }
 })
 
-const slice = createSlice({
+export const asyncActions = {
+    getTodosTC,
+    deleteTodoTC,
+    addTodoTC,
+    changeTodoTitleTC,
+}
+
+export const slice = createSlice({
     name: "todoLists",
     initialState: [] as Array<TodoListDomainType>,
     reducers: {
