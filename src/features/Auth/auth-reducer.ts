@@ -91,7 +91,6 @@ export const loginTC = createAsyncThunk<undefined, LoginParamsType, {
         return rejectWithValue({ errors: [error.message], fieldsErrors: undefined })
     }
 })
-
 export const logoutTC = createAsyncThunk("auth/logout", async (param, { dispatch, rejectWithValue }) => {
     dispatch(setAppStatusAC({ status: 'loading' }))
     try {
@@ -109,7 +108,6 @@ export const logoutTC = createAsyncThunk("auth/logout", async (param, { dispatch
         return rejectWithValue({})
     }
 })
-
 export const initializeAppTC = createAsyncThunk("auth/initializeApp", async (param, { dispatch, rejectWithValue }) => {
     try {
         const res = await authAPI.me()
@@ -127,6 +125,12 @@ export const initializeAppTC = createAsyncThunk("auth/initializeApp", async (par
         dispatch(setAppInitializeAC({ value: true }))
     }
 })
+
+export const asyncActions = {
+    loginTC,
+    logoutTC,
+    initializeAppTC,
+}
 
 const slice = createSlice({
     name: "auth",

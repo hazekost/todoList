@@ -28,10 +28,10 @@ export const TodoListsList = React.memo(() => {
         <Grid container style={{ padding: "10px" }}>
             <AddItemForm addItem={addTodoTC} disabled={false} />
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} style={{ flexWrap: "nowrap", overflowX: "scroll" }}>
             {todoLists.map(tl => {
                 return <Grid key={tl.id} item>
-                    <Paper style={{ padding: "10px" }}>
+                    <Paper style={{ padding: "10px", width: "280px" }}>
                         <TodoList
                             tlid={tl.id}
                             title={tl.title}

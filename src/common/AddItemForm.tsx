@@ -26,7 +26,7 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo((props) =>
     return <div>
         <TextField value={title} error={!!error} variant={"outlined"} label={"Title"}
             onKeyPress={addTaskOnKeyPress} helperText={error} onChange={onChangeInput} disabled={disabled} />
-        <IconButton color={"primary"} onClick={addItemHandler} disabled={disabled}>
+        <IconButton style={{ marginLeft: "5px" }} color={"primary"} onClick={addItemHandler} disabled={disabled}>
             <AddBoxRounded />
         </IconButton>
     </div>

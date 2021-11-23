@@ -2,29 +2,25 @@ import { AppBar, Button, CircularProgress, Container, IconButton, LinearProgress
 import { Menu } from '@material-ui/icons';
 import './App.css';
 import { TodoListsList } from '../features/TodoListsList';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ErrorSnackbar } from '../common/ErrorSnackBar';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Login } from '../features/Auth/Login';
+import { authActions, Login } from '../features/Auth';
 import { useEffect } from 'react';
-import { initializeAppTC, logoutTC } from '../features/Auth/auth-reducer';
 import { authSelectors } from '../features/Auth';
 import { selectIsInitialized, selectStatus } from './selectors';
+import { useActions } from './store';
 
 function App() {
 
-    const dispatch = useDispatch()
     let status = useSelector(selectStatus)
     let isInitialized = useSelector(selectIsInitialized)
     let isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
+    const { initializeAppTC, logoutTC } = useActions(authActions)
 
-    useEffect(() => {
-        dispatch(initializeAppTC())
-    }, [dispatch])
+    useEffect(() => { initializeAppTC() }, [initializeAppTC])
 
-    const onLogOutHandler = () => {
-        dispatch(logoutTC())
-    }
+    const onLogOutHandler = () => logoutTC()
 
     if (!isInitialized) {
         return <div

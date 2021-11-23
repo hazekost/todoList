@@ -20,13 +20,13 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
     const { deleteTaskTC, updateTaskTC } = useActions(tasksActions)
 
     const removeTask = () => deleteTaskTC({ tlid, taskid })
-    const changeStatus = () => updateTaskTC({ tlid, taskid, model: { status: status === 0 ? 2 : 0 } })
+    const changeTaskStatus = () => updateTaskTC({ tlid, taskid, model: { status: status === 0 ? 2 : 0 } })
     const changeTaskTitle = (title: string) => updateTaskTC({ tlid, taskid, model: { title } })
 
-    return <div className={status === 1 ? "is-done" : ""}>
-        <Checkbox color={"primary"} checked={status === 0 ? false : true} onChange={changeStatus} disabled={disabled} />
+    return <div className={status === 1 ? "is-done" : ""} style={{ position: "relative" }}>
+        <Checkbox color={"primary"} checked={status === 0 ? false : true} onChange={changeTaskStatus} disabled={disabled} />
         <EditableSpan title={title} setTitle={changeTaskTitle} disabled={disabled} />
-        <IconButton onClick={removeTask} disabled={disabled}>
+        <IconButton onClick={removeTask} disabled={disabled} style={{ position: "absolute", top: "-5px", right: "-15px" }}>
             <Delete />
         </IconButton>
     </div>
