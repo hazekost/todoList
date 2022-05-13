@@ -15,12 +15,15 @@ function App() {
         { id: v1(), title: "Graph QL", isDone: false },
     ])
 
-    function removeTask(id: string) {
+    const removeTask = (id: string) => {
         let newTasks = tasks.filter(t => t.id !== id)
         setTasks(newTasks)
     }
-    function addTask(title: string) {
+    const addTask = (title: string) => {
         setTasks([{ id: v1(), title, isDone: false }, ...tasks])
+    }
+    const changeTaskStatus = (id: string, status: boolean) => {
+        setTasks(tasks.map(t => t.id === id ? { ...t, isDone: status } : t))
     }
 
     let [filter, setFilter] = useState<FilterType>("all")
@@ -36,7 +39,13 @@ function App() {
 
     return (
         <div className="App">
-            <TodoList title="What to do" tasks={tasksForTodoList} removeTask={removeTask} changeFilter={setFilter} addTask={addTask} />
+            <TodoList title="What to do"
+                tasks={tasksForTodoList}
+                filter={filter}
+                removeTask={removeTask}
+                changeFilter={setFilter}
+                addTask={addTask}
+                changeTaskStatus={changeTaskStatus} />
         </div>
     );
 }
