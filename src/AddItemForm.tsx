@@ -1,5 +1,6 @@
-import React from "react"
+import { IconButton, TextField } from "@mui/material"
 import { ChangeEvent, useState, KeyboardEvent } from "react"
+import { AddBox } from '@mui/icons-material'
 
 type CustomInputPropsType = {
     addItem: (title: string) => void
@@ -31,8 +32,10 @@ export const AddItemForm: React.FC<CustomInputPropsType> = (props) => {
     }
 
     return <div>
-        <input className={error ? "error" : ""} value={title} onChange={onChangeHandler} onKeyUp={onKeyPressHandler} />
-        <button onClick={addTask}>+</button>
-        {error && <div className='error-message'>{error}</div>}
+        <TextField value={title} size="small" label="Title" helperText={error} error={!!error}
+            onChange={onChangeHandler} onKeyUp={onKeyPressHandler} />
+        <IconButton color="primary" size="medium" onClick={addTask}>
+            <AddBox />
+        </IconButton>
     </div>
 }
