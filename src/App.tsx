@@ -25,6 +25,22 @@ function App() {
         { id: todoListId1, title: "What to Learn", filter: "all" },
         { id: todoListId2, title: "What to Buy", filter: "all" },
     ])
+    const changeFilter = (id: string, filter: FilterType) => {
+        setTodoLists(todoLists.map(tl => tl.id === id ? { ...tl, filter } : tl))
+    }
+    const removeTodoList = (id: string) => {
+        delete tasks[id]
+        setTodoLists(todoLists.filter(tl => tl.id !== id))
+    }
+    const addTodoList = (title: string) => {
+        const todoId = v1()
+        setTodoLists([{ id: todoId, title, filter: "all" }, ...todoLists])
+        setTasks({ ...tasks, [todoId]: [] })
+    }
+    const changeTodoListTitle = (id: string, title: string) => {
+        setTodoLists(todoLists.map(tl => tl.id === id ? { ...tl, title } : tl))
+    }
+
     let [tasks, setTasks] = useState<TasksType>({
         [todoListId1]: [
             { id: v1(), title: "HTML & CSS", isDone: true },
@@ -40,7 +56,6 @@ function App() {
             { id: v1(), title: "Cheese", isDone: true },
         ]
     })
-
     const removeTask = (tlId: string, id: string) => {
         setTasks({ ...tasks, [tlId]: tasks[tlId].filter((t: TaskType) => t.id !== id) })
     }
@@ -49,21 +64,6 @@ function App() {
     }
     const changeTaskStatus = (tlId: string, taskId: string, status: boolean) => {
         setTasks({ ...tasks, [tlId]: tasks[tlId].map(t => t.id === taskId ? { ...t, isDone: status } : t) })
-    }
-    const changeFilter = (id: string, filter: FilterType) => {
-        setTodoLists(todoLists.map(tl => tl.id === id ? { ...tl, filter } : tl))
-    }
-    const removeTodoList = (id: string) => {
-        delete tasks[id]
-        setTodoLists(todoLists.filter(tl => tl.id !== id))
-    }
-    const addTodoList = (title: string) => {
-        const todoId = v1()
-        setTodoLists([{ id: todoId, title, filter: "all" }, ...todoLists])
-        setTasks({ ...tasks, [todoId]: [] })
-    }
-    const changeTodoListTitle = (id: string, title: string) => {
-        setTodoLists(todoLists.map(tl => tl.id === id ? { ...tl, title } : tl))
     }
     const changeTaskTitle = (todoId: string, taskId: string, title: string) => {
         setTasks({ ...tasks, [todoId]: tasks[todoId].map(t => t.id === taskId ? { ...t, title } : t) })
