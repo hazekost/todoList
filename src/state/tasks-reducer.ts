@@ -25,9 +25,9 @@ export const tasksReducer = (state: TasksStateType = {}, action: ActionsType): T
         case "ADD-TODOLIST":
             return { ...state, [action.id]: [] }
         case "REMOVE-TODOLIST":
-            const newState = { ...state }
-            delete newState[action.id]
-            return newState
+            const stateCopy = { ...state }
+            delete stateCopy[action.id]
+            return stateCopy
         default:
             return state
     }
